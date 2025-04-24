@@ -38,8 +38,6 @@ export default {
       }
     }
   },
-  created () {
-  },
   mounted () {
     console.log('mounted called...')
   },
@@ -53,6 +51,8 @@ export default {
               if (data.status === true) {
                 alert('Logged In Successfully')
                 localStorage.setItem('token', data.token)
+                axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+                alert(data.token)
                 this.$router.push({ name: 'TaskList' }) // <-- redirect here
               } else {
                 alert('Login Failed')
@@ -62,6 +62,13 @@ export default {
             }
           }
         )
+    },
+    created () {
+      const token = localStorage.getItem('token')
+      if (token) {
+        alert(token)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+      }
     }
   }
 }
